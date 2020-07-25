@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MvcCurrency.Services;
 
 namespace MvcCurrency
 {
@@ -24,6 +25,17 @@ namespace MvcCurrency
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+        }
+
+        public void SetupHttpClient(IServiceCollection services)
+        {
+            var nbpApiBaseAddress = Configuration.GetSection("NbpApiBaseAddress").Get<string>();
+
+            services.AddHttpClient<ICurrencyService, CurrencyService>(c => 
+                {
+                    c.DefaultRequestHeaders.Add("Accept", "application/json");
+                    c.BaseAddress = new Uri(nbpApiBaseAddress);
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
