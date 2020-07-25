@@ -33,7 +33,7 @@ namespace MvcCurrency.Services
 
         public async Task<ApiResponse<List<MonthlyRate>>> GetMonthlyAverageRates(string currencyName)
         {
-            var endpoint = $"/rates/a/{currencyName}/";
+            var endpoint = $"rates/a/{currencyName}/";
 
             var currentDate = DateTime.Now;
             var currentMonth = currentDate.Month;
@@ -79,7 +79,7 @@ namespace MvcCurrency.Services
             var lastDayOfMonth = new DateTime(currentDate.Year, currentDate.Month, DateTime.DaysInMonth(currentDate.Year, currentDate.Month))
                 .ToString("yyyy-MM-dd");
 
-            var endpoint = $"/rates/a/{currencyName}/{firstDayOfMonth}/{lastDayOfMonth}";
+            var endpoint = $"rates/a/{currencyName}/{firstDayOfMonth}/{lastDayOfMonth}";
             var response = await GetCurrencyRate(endpoint);
 
             return new ApiResponse<List<Rate>>
@@ -97,7 +97,7 @@ namespace MvcCurrency.Services
             var currentFormattedDate = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day)
                 .ToString("yyyy-MM-dd");
 
-            var endpoint = $"/rates/a/{currencyName}/{firstDayOfMonth}/{currentFormattedDate}";
+            var endpoint = $"rates/a/{currencyName}/{firstDayOfMonth}/{currentFormattedDate}";
             var response = await GetCurrencyRate(endpoint);
 
             return new ApiResponse<List<Rate>>
