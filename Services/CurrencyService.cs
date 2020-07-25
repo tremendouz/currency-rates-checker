@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Linq;
+using System.IO;
 
 namespace MvcCurrency.Services
 {
@@ -73,10 +74,12 @@ namespace MvcCurrency.Services
 
         public async Task<ApiResponse<List<Rate>>> GetRatesForGivenMonth(string currencyName, DateTime currentDate)
         {
-            var firstDayOfMonth = new DateTime(currentDate.Year, currentDate.Month, 1);
-            var lastDayOfMonth = new DateTime(currentDate.Year, currentDate.Month, DateTime.DaysInMonth(currentDate.Year, currentDate.Month));
+            var firstDayOfMonth = new DateTime(currentDate.Year, currentDate.Month, 1)
+                .ToString("yyyy-MM-dd");
+            var lastDayOfMonth = new DateTime(currentDate.Year, currentDate.Month, DateTime.DaysInMonth(currentDate.Year, currentDate.Month))
+                .ToString("yyyy-MM-dd");
 
-            var endpoint = $"rates/a/{currencyName}/{firstDayOfMonth}/{lastDayOfMonth}";
+            var endpoint = $"/rates/a/{currencyName}/{firstDayOfMonth}/{lastDayOfMonth}";
             var response = await GetCurrencyRate(endpoint);
 
             return new ApiResponse<List<Rate>>
@@ -89,15 +92,17 @@ namespace MvcCurrency.Services
         public async Task<ApiResponse<List<Rate>>> GetRatesForCurrentMonth(string currencyName)
         {
             var currentDate = DateTime.Now;
-            var firstDayOfMonth = new DateTime(currentDate.Year, currentDate.Month, 1);
-            var currentFormattedDate = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day);
+            var firstDayOfMonth = new DateTime(currentDate.Year, currentDate.Month, 1)
+                .ToString("yyyy-MM-dd");
+            var currentFormattedDate = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day)
+                .ToString("yyyy-MM-dd");
 
-            var endpoint = $"rates/a/{currencyName}/{firstDayOfMonth}/{currentFormattedDate}";
+            var endpoint = $"/rates/a/{currencyName}/{firstDayOfMonth}/{currentFormattedDate}";
             var response = await GetCurrencyRate(endpoint);
 
             return new ApiResponse<List<Rate>>
             {
-                Payload = response.CurrencyRate.Rates,
+                Payload = response.CurrencyRate?.Rates,
                 ErrorMsg = response.ErrorMsg
             };
         }

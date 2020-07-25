@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace MvcCurrency.Models
 {
+    [Serializable]
     public class Rate
     {
         public string No { get; set; }

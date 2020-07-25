@@ -25,6 +25,8 @@ namespace MvcCurrency
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddScoped<IExcelExportService, ExcelExportService>();
+            SetupHttpClient(services);
         }
 
         public void SetupHttpClient(IServiceCollection services)
