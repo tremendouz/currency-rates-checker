@@ -2,7 +2,41 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+    <div class="text-center">
+        <p>1 USD = @ViewData["UsdToPln"] PLN</p>
+        <p>1 EUR = @ViewData["EurToPln"] PLN</p>
+
+        <p>@Html.ActionLink("Download", "GetExcelFile", "Home", new { currencyName = "usd" }, null)</p>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-condensed table-striped table-hover sortable">
+                @if (Model.Count == 0)
+                {
+                    <tr>
+                        <td colspan="10">No Record's found.</td>
+                    </tr>
+
+                }
+                else
+                {
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>EffectiveDate</th>
+                            <th>Mid</th>
+                        </tr>
+                    </thead>
+
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.No</td>
+                            <td>@item.EffectiveDate</td>
+                            <td>@item.Mid</td>
+                        </tr>
+
+                    }
+                }
+            </table>
+        </div>
+    </div>

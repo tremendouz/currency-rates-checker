@@ -21,12 +21,12 @@ namespace MvcCurrency.Services
 
         public async Task<ApiResponse<Rate>> GetCurrentAverageRate(string currencyName)
         {
-            var endpoint = $"/rates/a/{currencyName}/";
+            var endpoint = $"rates/a/{currencyName}/";
             var response = await GetCurrencyRate(endpoint);
 
             return new ApiResponse<Rate>
             {
-                Payload = response.CurrencyRate.Rates.FirstOrDefault(),
+                Payload = response.CurrencyRate?.Rates.FirstOrDefault(),
                 ErrorMsg = response.ErrorMsg
             };
         }

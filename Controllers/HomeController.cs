@@ -25,9 +25,17 @@ namespace MvcCurrency.Controllers
             _currencyService = currencyService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var eurToPln = await _currencyService.GetCurrentAverageRate(CurrencyNames.eur.ToString());
+            var usdToPln = await _currencyService.GetCurrentAverageRate(CurrencyNames.usd.ToString());
+
+            ViewData["EurToPln"] = eurToPln.Payload?.Mid;
+            ViewData["UsdToPln"] = usdToPln.Payload?.Mid;
+
+            var usdToPlnForCurrentMonth = await _currencyService.GetRatesForCurrentMonth(CurrencyNames.usd.ToString());
+
+            return View(usdToPlnForCurrentMonth.Payload);
         }
 
         public IActionResult Privacy()
@@ -35,9 +43,9 @@ namespace MvcCurrency.Controllers
             return View();
         }
 
-        public async Task<IActionResult> GetExcelFile()
+        public async Task<IActionResult> GetExcelFile(string currencyName)
         {
-            var data = await _currencyService.GetRatesForCurrentMonth(CurrencyNames.eur.ToString());
+            var data = await _currencyService.GetRatesForCurrentMonth(currencyName);
             if (!string.IsNullOrEmpty(data.ErrorMsg))
             {
                 return NotFound($"NBP API error. {data.ErrorMsg}");
