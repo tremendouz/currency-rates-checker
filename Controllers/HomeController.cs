@@ -53,7 +53,7 @@ namespace MvcCurrency.Controllers
 
             var fileContent = _excelExportService.GetFileContent(data.Payload);
             return File(fileContent, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                "users.xlsx");
+                $"rates_{currencyName}_PLN_{DateTime.Now:yyyy-MM-dd}.xlsx");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
