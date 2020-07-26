@@ -33,8 +33,6 @@ namespace MvcCurrency.Services
 
         public async Task<ApiResponse<List<MonthlyRate>>> GetMonthlyAverageRates(string currencyName)
         {
-            var endpoint = $"rates/a/{currencyName}/";
-
             var currentDate = DateTime.Now;
             var currentMonth = currentDate.Month;
 
@@ -52,17 +50,10 @@ namespace MvcCurrency.Services
                     var avgRate = monthlyAvarage.Payload.Average(m => m.Mid);
                     monthlyAvarages.Add(new MonthlyRate()
                     {
-                        Date = dateWithOffset,
-                        Rate = avgRate
+                        Date = dateWithOffset.ToString("MMM yyyy"),
+                        Rate = Math.Round(avgRate,2)
                     });
                 } 
-                else
-                {
-                    return new ApiResponse<List<MonthlyRate>>()
-                    {
-                        ErrorMsg = monthlyAvarage.ErrorMsg
-                    };
-            }
 
                 offset--;
             }
@@ -84,7 +75,7 @@ namespace MvcCurrency.Services
 
             return new ApiResponse<List<Rate>>
             {
-                Payload = response.CurrencyRate.Rates,
+                Payload = response.CurrencyRate?.Rates,
                 ErrorMsg = response.ErrorMsg
             };
         }

@@ -7,7 +7,7 @@ namespace MvcCurrency.Models
 {
     public class MonthlyRate
     {
-        public DateTime Date { get; set; }
+        public string Date { get; set; }
         public double Rate { get; set; }
     }
 }

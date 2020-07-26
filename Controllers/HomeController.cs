@@ -38,9 +38,18 @@ namespace MvcCurrency.Controllers
             return View(usdToPlnForCurrentMonth.Payload);
         }
 
-        public IActionResult Privacy()
+        public async Task<IActionResult> MonthRate()
         {
-            return View();
+            var usdToPlnForCurrentMonth = await _currencyService.GetRatesForCurrentMonth(CurrencyNames.usd.ToString());
+
+            return View(usdToPlnForCurrentMonth.Payload);
+        }
+
+        public async Task<IActionResult> YearRate()
+        {
+            var usdToPlnForCurrentYear = await _currencyService.GetMonthlyAverageRates(CurrencyNames.usd.ToString());
+
+            return View(usdToPlnForCurrentYear.Payload);
         }
 
         public async Task<IActionResult> GetExcelFile(string currencyName)
